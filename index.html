@@ -19,7 +19,7 @@
 
     #grid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 10px;
       max-width: 400px;
       margin: 20px auto;
@@ -28,6 +28,7 @@
     .grid-button {
       padding: 20px;
       font-size: 1.5em;
+      font-family: "Times New Roman", Times, serif;
       background-color: #ffffff;
       border: 2px solid #ccc;
       border-radius: 8px;
@@ -73,8 +74,9 @@
   <button id="play-again" onclick="startGame()">Play a New Game</button>
 
   <script>
-    const gridSize = 6;
-    const totalCells = gridSize * gridSize;
+    const columns = 5;
+    const rows = 6;
+    const totalCells = columns * rows;
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let targetLetter = "";
     let targetIndices = new Set();
@@ -93,7 +95,7 @@
 
       // Generate new target letter
       targetLetter = getRandomLetter();
-      document.getElementById("instruction").textContent = `Find all the "${targetLetter}" below`;
+      document.getElementById("instruction").textContent = `Find all the "${targetLetter}" in the boxes below:`;
 
       // Populate grid
       const grid = document.getElementById("grid");

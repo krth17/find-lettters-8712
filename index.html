@@ -26,7 +26,7 @@
     }
 
     .grid-button {
-      padding: 20px;
+      padding: 16px;
       font-size: 1.5em;
       font-family: "Times New Roman", Times, serif;
       background-color: #ffffff;
@@ -43,18 +43,12 @@
       border-color: #388E3C;
     }
 
-    #message {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #333;
-    }
-
     #play-again {
       margin-top: 20px;
-      padding: 10px 20px;
+      padding: 12px 24px;
       font-size: 1em;
       border: none;
-      background-color: #007BFF;
+      background-color: #4CAF50;
       color: white;
       border-radius: 5px;
       cursor: pointer;
@@ -62,7 +56,7 @@
     }
 
     #play-again:hover {
-      background-color: #0056b3;
+      background-color: #388E3C;
     }
   </style>
 </head>
@@ -70,12 +64,11 @@
 
   <h1 id="instruction">Loading game...</h1>
   <div id="grid"></div>
-  <div id="message"></div>
-  <button id="play-again" onclick="startGame()">Play a New Game</button>
+  <button id="play-again" onclick="startGame()">🎉 Congratulations! Play a new game</button>
 
   <script>
     const columns = 5;
-    const rows = 6;
+    const rows = 5;
     const totalCells = columns * rows;
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let targetLetter = "";
@@ -86,11 +79,20 @@
       return letters[Math.floor(Math.random() * letters.length)];
     }
 
+    function playBeep() {
+      const context = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = context.createOscillator();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(500, context.currentTime);
+      oscillator.connect(context.destination);
+      oscillator.start();
+      oscillator.stop(context.currentTime + 0.2);
+    }
+
     function startGame() {
       // Reset state
       targetIndices.clear();
       foundIndices.clear();
-      document.getElementById("message").textContent = "";
       document.getElementById("play-again").style.display = "none";
 
       // Generate new target letter
@@ -126,10 +128,9 @@
       if (char === targetLetter && !foundIndices.has(index)) {
         foundIndices.add(index);
         button.classList.add("found");
+        playBeep();
 
         if (foundIndices.size === targetIndices.size) {
-          document.getElementById("message").textContent =
-            `🎉 Congrats! You found all the "${targetLetter}" buttons!`;
           document.getElementById("play-again").style.display = "inline-block";
         }
       }
